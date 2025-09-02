@@ -5,9 +5,9 @@ export const AppContext = createContext()
 
 const AppContextProvider = (props) => {
 
-    
+    const backendUrl = 'http://localhost:5000'
     const value = {
-        
+        backendUrl
     }
 
     return (
