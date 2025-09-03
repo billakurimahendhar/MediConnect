@@ -10,12 +10,15 @@ import MyProfile from './pages/MyProfile';
 import MyAppointments from './pages/MyAppointments';
 import Contact from './pages/Contact';
 import Footer from './components/Footer';
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Main App component
 
 const App=()=>{
   return(
   <div className='mx-4 sm:mx-[10%]'>
+    <ToastContainer position='top-center' theme='colored'/>
     <Navbar/>
     <Routes>
       <Route path="/" element={<Home />} />
