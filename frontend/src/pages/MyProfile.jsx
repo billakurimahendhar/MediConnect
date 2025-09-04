@@ -5,12 +5,15 @@ import { toast } from 'react-toastify'
 import { assets } from '../assets/assets'
 
 const MyProfile = () => {
+    const { token, backendUrl, userData, setUserData, loadUserProfileData } = useContext(AppContext);
+   
+
+
+
 
     const [isEdit, setIsEdit] = useState(false)
-
     const [image, setImage] = useState(false)
 
-    const { token, backendUrl, userData, setUserData, loadUserProfileData } = useContext(AppContext)
 
     // Function to update user profile data using API
     const updateUserProfileData = async () => {
@@ -31,7 +34,7 @@ const MyProfile = () => {
 
             if (data.success) {
                 toast.success(data.message)
-                await loadUserProfileData()
+                await loadUserProfileData();
                 setIsEdit(false)
                 setImage(false)
             } else {
@@ -45,9 +48,8 @@ const MyProfile = () => {
 
     }
 
-    return userData ? (
+    return userData &&(
         <div className='max-w-lg flex flex-col gap-2 text-sm pt-5'>
-      
 
             {isEdit
                 ? <label htmlFor='image' >
@@ -117,13 +119,13 @@ const MyProfile = () => {
             <div className='mt-10'>
 
                 {isEdit
-                    ? <button onClick={updateUserProfileData} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all'>Save information</button>
-                    : <button onClick={() => setIsEdit(true)} className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all'>Edit</button>
+                    ? <button onClick={updateUserProfileData} className='border border-primary px-8 py-2 rounded-full hover:bg-blue-500 hover:text-white transition-all'>Save information</button>
+                    : <button onClick={() => setIsEdit(true)} className='border border-primary px-8 py-2 rounded-full hover:bg-blue-500 hover:text-white transition-all'>Edit</button>
                 }
 
             </div>
         </div>
-    ) : <div>hello this is profile page</div>
+    ) ;
 }
 
-export default MyProfile
+export default MyProfile;

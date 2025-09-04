@@ -1,13 +1,15 @@
 import react, { useState } from 'react';
 import { AppContext } from '../context/AppContext';
-import { use } from 'react';
 import axios from 'axios';
+import { useContext } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 const Login = () => {
-  const{backendUrl,token,setToken}=use(AppContext);
- 
+  const{backendUrl,token,setToken}=useContext(AppContext);
+    const navigate = useNavigate(); 
     const [state, setState] = useState('Sign Up')
-  
+    
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -25,7 +27,7 @@ const Login = () => {
                     toast.error(data.message);
                 }   
             } else {
-                const { data } = await axios.post(backendurl + '/api/user/login', { email, password });   
+                const { data } = await axios.post(backendUrl + '/api/user/login', { password, email });   
                 if (data.success) {
                     setToken(data.token);
                     localStorage.setItem('token',data.token);
@@ -35,11 +37,16 @@ const Login = () => {
                 }
             }
         } catch (error) {
-            alert('Something went wrong');
+            toast('Something went wrong');
         }   
-
+     
     
 }
+useEffect(()=>{
+  if(token){
+    navigate('/');
+  }   
+},[token])  
     
 
   return (
