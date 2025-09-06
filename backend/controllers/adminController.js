@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import validator from 'validator';
 import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from 'cloudinary';
+import appointmentModel from "../models/appointmentModel.js";
+import userModel from '../models/userModel.js';
 
 const addDoctor = async (req, res) => {
     try{
@@ -90,5 +92,51 @@ const allDoctors = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+const appoinmentsAdmin=async(req,res)=>{
+     try{
+          const appointments=await appointmentModel.find({}); 
+          res.json({success:true,appointments})
+     }catch(error){
+        res.json({success:false,message:error.message})
+     }
+}
+const appointmentCancel = async (req, res) => {
+    try {
 
-export {addDoctor, loginAdmin, allDoctors};
+        const { appointmentId } = req.body
+        await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+
+        res.json({ success: true, message: 'Appointment Cancelled' })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+
+}
+
+const adminDashboard = async (req, res) => {
+    try {
+
+        const doctors = await doctorModel.find({})
+        const users = await userModel.find({})
+        const appointments = await appointmentModel.find({})
+
+        const dashData = {
+            doctors: doctors.length,
+            appointments: appointments.length,
+            patients: users.length,
+            latestAppointments: appointments.reverse()
+        }
+
+        res.json({ success: true, dashData })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+
+
+export {addDoctor, loginAdmin, allDoctors,appoinmentsAdmin,appointmentCancel,adminDashboard};
